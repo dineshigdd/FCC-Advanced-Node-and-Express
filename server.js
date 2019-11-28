@@ -66,8 +66,16 @@ mongo.connect(process.env.DATABASE, (err, db) => {
       });
   
       
+     passport.use(new GitHubStrategy({
+        clientID: process.env.GITHUB_CLIENT_ID,
+        ClientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL:'https://delightful-diagnostic.glitch.me/auth/github/callback'
+      },
       
-      
+       function(accessToken, refreshToken, profile, cb ){
+        console.log(profile);
+      }                                
+     ));  
       
       
         /*
