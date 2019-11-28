@@ -18,12 +18,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'pug')
 
-mongo.connect(process.env.DATABASE, (err, db) => {
+mongo.connect(process.env.DATABASE,{ useUnifiedTopology: true }, (err, db) => {
     if(err) {
         console.log('Database error: ' + err);
     } else {
         console.log('Successful database connection');
-      
+        db = db.db('users');//I add this line as Version 3 MongoDB connect differently where it gives the parent instead of the db.
         app.use(session({
           secret: process.env.SESSION_SECRET,
           resave: true,
