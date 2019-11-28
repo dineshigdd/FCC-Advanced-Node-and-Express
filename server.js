@@ -67,7 +67,7 @@ mongo.connect(process.env.DATABASE,{ useUnifiedTopology: true }, (err, db) => {
   
       
      passport.use(new GitHubStrategy({
-          clientID: process.env.GITHUB_CLIENT_ID,
+          clientID : process.env.G,
           clientSecret: process.env.GITHUB_CLIENT_SECRET,
           callbackURL: "https://delightful-diagnostic.glitch.me/auth/github/callback"
      },
