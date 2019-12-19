@@ -23,7 +23,9 @@ mongo.connect(process.env.DATABASE,{ useUnifiedTopology: true }, (err, db) => {
         console.log('Database error: ' + err);
     } else {
         console.log('Successful database connection');
-        db = db.db('users');//I add this line as Version 3 MongoDB connect differently where it gives the parent instead of the db.
+      
+      //  db = db.db('users');//I add this line as Version 3 MongoDB connect differently where it gives the parent instead of the db.
+      
         app.use(session({
           secret: process.env.SESSION_SECRET,
           resave: true,
@@ -55,22 +57,13 @@ mongo.connect(process.env.DATABASE,{ useUnifiedTopology: true }, (err, db) => {
       
         /*
         *  ADD YOUR CODE BELOW
-        */
-      
-       app.route('/auth/github')
-          .get(passport.authenticate('github'));
-  
-       app.route('/auth/github/callback')
-          .get(passport.authenticate('github', { failureRedirect: '/' }),(req, res) =>{
-             res.redirect('/profile');
-      });
-  
+        */     
       
      passport.use(new GitHubStrategy({
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
         callbackURL:  "https://delightful-diagnostic.glitch.me/auth/github/callback"
-      },
+        },
         function(accessToken, refreshToken, profile, cb) {
           console.log(profile);
           //Database logic here with callback containing our user object
@@ -94,9 +87,16 @@ mongo.connect(process.env.DATABASE,{ useUnifiedTopology: true }, (err, db) => {
                     return cb(null, doc.value);
                   }
                 );
-        }
-));
+            }
+        ));
       
+      app.route('/auth/github')
+          .get(passport.authenticate('github'));
+  
+       app.route('/auth/github/callback')
+          .get(passport.authenticate('github', { failureRedirect: '/' }),(req, res) =>{
+             res.redirect('/profile');
+      });
       
         /*
         *  ADD YOUR CODE ABOVE
