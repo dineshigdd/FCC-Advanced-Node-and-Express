@@ -7,6 +7,7 @@ const session     = require('express-session');
 const mongo       = require('mongodb').MongoClient;
 const passport    = require('passport');
 const GitHubStrategy = require('passport-github').Strategy;
+const io = require('socket.io')('http');
 
 const app = express();
 
@@ -24,7 +25,7 @@ mongo.connect(process.env.DATABASE,{ useUnifiedTopology: true }, (err, db) => {
     } else {
         console.log('Successful database connection');
       
-      //  db = db.db('users');//I add this line as Version 3 MongoDB connect differently where it gives the parent instead of the db.
+        db = db.db('users');//I add this line as Version 3 MongoDB connect differently where it gives the parent instead of the db.
       
         app.use(session({
           secret: process.env.SESSION_SECRET,
@@ -98,6 +99,10 @@ mongo.connect(process.env.DATABASE,{ useUnifiedTopology: true }, (err, db) => {
              res.redirect('/profile');
       });
       
+      
+      io.on('connection', socket => {
+        console.log('A user has ')
+      })
         /*
         *  ADD YOUR CODE ABOVE
         */
